@@ -19,7 +19,7 @@ services:
       - key: COOKIE_SECRET
         generateValue: true
       - key: CLIENT_ORIGIN
-        sync: false
+        value: https://frontend-chi-indol-27.vercel.app
       - key: AI_PROVIDER
         value: mock
       - key: GEMINI_API_KEY

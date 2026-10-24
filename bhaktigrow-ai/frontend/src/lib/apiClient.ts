@@ -3,7 +3,14 @@
  * Connects frontend to the Express RESTful backend (/api/v1)
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+export const getApiBaseUrl = (): string => {
+  if (typeof window !== 'undefined' && localStorage.getItem('bhaktigrow_api_url')) {
+    return localStorage.getItem('bhaktigrow_api_url')!;
+  }
+  return import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+};
+
+export const API_BASE_URL = getApiBaseUrl();
 
 export interface ApiResponse<T = unknown> {
   success: boolean;
@@ -22,10 +29,24 @@ export interface ApiResponse<T = unknown> {
 }
 
 class ApiClient {
-  private baseUrl: string;
+  private defaultBaseUrl: string;
 
-  constructor(baseUrl: string) {
-    this.baseUrl = baseUrl;
+  constructor(defaultBaseUrl: string) {
+    this.defaultBaseUrl = defaultBaseUrl;
+  }
+
+  public getBaseUrl(): string {
+    return getApiBaseUrl();
+  }
+
+  public setBaseUrl(url: string | null): void {
+    if (typeof window !== 'undefined') {
+      if (url && url.trim()) {
+        localStorage.setItem('bhaktigrow_api_url', url.trim().replace(/\/+$/, ''));
+      } else {
+        localStorage.removeItem('bhaktigrow_api_url');
+      }
+    }
   }
 
   private getToken(): string | null {
@@ -36,7 +57,8 @@ class ApiClient {
     endpoint: string,
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
-    const url = `${this.baseUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+    const base = this.getBaseUrl();
+    const url = `${base}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
     const token = this.getToken();
 
     const headers: Record<string, string> = {
@@ -184,6 +206,11 @@ class ApiClient {
   // Analytics Endpoints
   analytics = {
     getOverview: () => this.request('/analytics/overview', { method: 'GET' })
+  };
+
+  // Health Check
+  health = {
+    check: () => this.request<{ status: string; uptime: number; timestamp: string }>('/health', { method: 'GET' })
   };
 
   // Settings Endpoints

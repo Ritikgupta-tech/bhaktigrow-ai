@@ -20,7 +20,10 @@ import {
   User,
   Key,
   Database,
-  Lock
+  Lock,
+  Activity,
+  CheckCircle2,
+  AlertCircle
 } from 'lucide-react';
 
 export const SettingsPage: React.FC = () => {
@@ -33,6 +36,55 @@ export const SettingsPage: React.FC = () => {
   // Profile Update State
   const [profileName, setProfileName] = useState(user?.name || '');
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
+
+  // Backend API URL and Health State
+  const [apiUrl, setApiUrl] = useState(api.getBaseUrl());
+  const [isCheckingHealth, setIsCheckingHealth] = useState(false);
+  const [healthResult, setHealthResult] = useState<{ ok: boolean; message: string } | null>(null);
+
+  const handleCheckHealth = async () => {
+    setIsCheckingHealth(true);
+    setHealthResult(null);
+    const start = Date.now();
+    try {
+      const res = await api.health.check();
+      const elapsed = Date.now() - start;
+      if (res.success || (res as any).status === 'ok') {
+        setHealthResult({
+          ok: true,
+          message: `Connected successfully (${elapsed}ms latency). Service: ${(res as any).service || 'BhaktiGrow AI API'}`
+        });
+        showToast('Backend health verified!', 'success');
+      } else {
+        setHealthResult({
+          ok: false,
+          message: res.message || 'Health check returned non-200 status'
+        });
+        showToast('Backend health check failed', 'error');
+      }
+    } catch (err: any) {
+      setHealthResult({
+        ok: false,
+        message: err.message || 'Cannot connect to backend endpoint'
+      });
+      showToast('Failed to connect to backend', 'error');
+    } finally {
+      setIsCheckingHealth(false);
+    }
+  };
+
+  const handleSaveApiUrl = () => {
+    api.setBaseUrl(apiUrl);
+    showToast('Backend API URL updated', 'success');
+    handleCheckHealth();
+  };
+
+  const handleResetApiUrl = () => {
+    api.setBaseUrl(null);
+    setApiUrl(api.getBaseUrl());
+    showToast('Reset to default API endpoint', 'info');
+    setHealthResult(null);
+  };
 
   // Change Password State
   const [currentPassword, setCurrentPassword] = useState('');
@@ -215,6 +267,65 @@ export const SettingsPage: React.FC = () => {
               <p className="text-indigo-400 font-mono text-[11px]">JWT + Bcrypt + Helmet</p>
               <p className="text-slate-400 text-[10px]">Anti-brute force rate limiting &amp; CORS</p>
             </div>
+          </div>
+
+          {/* Backend Connection & Live Ping Tool */}
+          <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-xs font-bold text-white">
+                <Activity className="w-4 h-4 text-emerald-400" />
+                <span>Backend API Base URL</span>
+              </div>
+              <button
+                type="button"
+                onClick={handleResetApiUrl}
+                className="text-[11px] text-slate-400 hover:text-amber-300 underline"
+              >
+                Reset to default
+              </button>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-2">
+              <input
+                type="text"
+                value={apiUrl}
+                onChange={e => setApiUrl(e.target.value)}
+                placeholder="http://localhost:5000/api/v1 or https://your-render-url.onrender.com/api/v1"
+                className="flex-1 px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white text-xs font-mono focus:outline-none focus:border-amber-500"
+              />
+              <div className="flex gap-2">
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={handleSaveApiUrl}
+                >
+                  Save URL
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={handleCheckHealth}
+                  disabled={isCheckingHealth}
+                >
+                  {isCheckingHealth ? 'Testing...' : 'Ping Health'}
+                </Button>
+              </div>
+            </div>
+
+            {healthResult && (
+              <div className={`p-3 rounded-lg border text-xs flex items-start gap-2 ${
+                healthResult.ok 
+                  ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300' 
+                  : 'bg-red-500/10 border-red-500/30 text-red-300'
+              }`}>
+                {healthResult.ok ? (
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                ) : (
+                  <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                )}
+                <span className="font-mono text-[11px]">{healthResult.message}</span>
+              </div>
+            )}
           </div>
         </div>
 

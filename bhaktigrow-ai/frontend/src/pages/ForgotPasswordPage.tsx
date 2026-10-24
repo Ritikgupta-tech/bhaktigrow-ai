@@ -9,15 +9,17 @@ export const ForgotPasswordPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [devToken, setDevToken] = useState<string | null>(null);
+  const [emailConfigured, setEmailConfigured] = useState<boolean | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     const res = await api.auth.forgotPassword(email);
     setLoading(false);
-    if ((res as any).devToken) {
-      setDevToken((res as any).devToken);
+    if (res.data && typeof (res.data as any).emailDeliveryConfigured === 'boolean') {
+      setEmailConfigured((res.data as any).emailDeliveryConfigured);
+    } else if (typeof (res as any).emailDeliveryConfigured === 'boolean') {
+      setEmailConfigured((res as any).emailDeliveryConfigured);
     }
     setSubmitted(true);
   };
@@ -42,20 +44,22 @@ export const ForgotPasswordPage: React.FC = () => {
             <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
             <h4 className="text-sm font-bold text-white">Instructions Dispatched</h4>
             <p className="text-xs text-slate-300 leading-relaxed">
-              If an account with that email exists, password reset instructions and security token have been generated.
+              If an account with that email exists, an expiring single-use password reset token has been securely generated.
             </p>
-            {devToken && (
-              <div className="p-3 rounded-xl bg-amber-500/15 border border-amber-500/30 text-left text-xs font-mono break-all space-y-1">
-                <p className="font-sans font-bold text-amber-400">Dev Mode Reset Token:</p>
-                <p className="text-slate-200 select-all">{devToken}</p>
+            {emailConfigured === false && (
+              <div className="p-3 rounded-xl bg-amber-500/15 border border-amber-500/30 text-left text-xs text-slate-300 space-y-1">
+                <p className="font-bold text-amber-400">Email Delivery Note:</p>
+                <p className="text-[11px] text-slate-300 leading-relaxed">
+                  Outbound email delivery (SMTP/SES) is not configured in this environment. Contact your administrator or configure SMTP credentials in backend environment variables.
+                </p>
               </div>
             )}
             <div className="pt-2">
               <Link 
-                to={devToken ? `/reset-password?token=${encodeURIComponent(devToken)}` : "/reset-password"} 
+                to="/reset-password" 
                 className="text-xs text-amber-400 font-bold hover:underline"
               >
-                {devToken ? "Prefill Token & Set New Password →" : "Have a reset token? Click here to set new password →"}
+                Have your reset token? Click here to set new password →
               </Link>
             </div>
           </div>

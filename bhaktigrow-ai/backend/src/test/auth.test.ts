@@ -114,4 +114,75 @@ describe('Authentication & User Management Endpoints', () => {
     expect(res.status).toBe(401);
     expect(res.body.success).toBe(false);
   });
+
+  it('handles forgot-password, resets password with valid token, and enforces single-use', async () => {
+    const crypto = await import('crypto');
+    await request(app)
+      .post('/api/v1/auth/register')
+      .send({
+        name: 'Gopal Devotee',
+        email: 'gopal@bhaktigrow.com',
+        password: 'OriginalPassword123!'
+      });
+
+    // Request reset
+    const forgotRes = await request(app)
+      .post('/api/v1/auth/forgot-password')
+      .send({ email: 'gopal@bhaktigrow.com' });
+
+    expect(forgotRes.status).toBe(200);
+    expect(forgotRes.body.success).toBe(true);
+    // Verified: token is never exposed in response
+    expect(forgotRes.body.devToken).toBeUndefined();
+    expect(forgotRes.body.token).toBeUndefined();
+
+    // Verify hashed token in DB
+    const user = await User.findOne({ email: 'gopal@bhaktigrow.com' }).select('+resetPasswordToken +resetPasswordExpires');
+    expect(user?.resetPasswordToken).toBeDefined();
+    expect(user?.resetPasswordExpires).toBeDefined();
+
+    // Manually test reset with a known valid token
+    const testRawToken = 'test-secret-reset-token-1234567890';
+    const testHashedToken = crypto.createHash('sha256').update(testRawToken).digest('hex');
+    user!.resetPasswordToken = testHashedToken;
+    user!.resetPasswordExpires = new Date(Date.now() + 3600000);
+    await user!.save();
+
+    // Reset password successfully
+    const resetRes = await request(app)
+      .post('/api/v1/auth/reset-password')
+      .send({
+        token: testRawToken,
+        newPassword: 'BrandNewSecurePassword456!'
+      });
+
+    expect(resetRes.status).toBe(200);
+    expect(resetRes.body.success).toBe(true);
+
+    // Verify token is invalidated (single-use)
+    const userAfter = await User.findOne({ email: 'gopal@bhaktigrow.com' }).select('+resetPasswordToken');
+    expect(userAfter?.resetPasswordToken).toBeUndefined();
+
+    // Attempting to reuse the same token must fail
+    const reuseRes = await request(app)
+      .post('/api/v1/auth/reset-password')
+      .send({
+        token: testRawToken,
+        newPassword: 'AnotherPassword789!'
+      });
+
+    expect(reuseRes.status).toBe(400);
+    expect(reuseRes.body.success).toBe(false);
+
+    // Verify user can now log in with the new password
+    const loginRes = await request(app)
+      .post('/api/v1/auth/login')
+      .send({
+        email: 'gopal@bhaktigrow.com',
+        password: 'BrandNewSecurePassword456!'
+      });
+
+    expect(loginRes.status).toBe(200);
+    expect(loginRes.body.success).toBe(true);
+  });
 });

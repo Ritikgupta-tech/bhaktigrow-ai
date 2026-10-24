@@ -111,16 +111,11 @@ router.post(
       const token = generateToken(user);
       setAuthCookie(res, token);
 
-      if (env.NODE_ENV !== 'production') {
-        console.log(`[Dev Auth] Email verification token for ${email}: ${verificationToken}`);
-      }
-
       res.status(201).json({
         success: true,
         message: 'Account registered successfully.',
         token,
-        user: sanitizeUser(user),
-        ...(env.NODE_ENV !== 'production' ? { devVerificationToken: verificationToken } : {})
+        user: sanitizeUser(user)
       });
     } catch (err) {
       next(err);
@@ -202,24 +197,24 @@ router.post(
       const { email } = req.body;
       const user = await User.findOne({ email: email.toLowerCase() });
 
-      let devResetToken: string | undefined;
       if (user) {
+        // Secure 32-byte cryptographic token
         const resetToken = crypto.randomBytes(32).toString('hex');
+        // SHA-256 hashed before storage; plain token never logged or exposed
         user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-        user.resetPasswordExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+        user.resetPasswordExpires = new Date(Date.now() + 60 * 60 * 1000); // 1-hour expiration
         await user.save();
-
-        if (env.NODE_ENV !== 'production') {
-          devResetToken = resetToken;
-          console.log(`[Dev Auth] Password reset token for ${email}: ${resetToken}`);
-        }
       }
 
-      // Do not reveal if email exists
+      // Check whether outbound email delivery service is configured
+      const hasEmailService = !!process.env.SMTP_HOST || !!process.env.RESEND_API_KEY;
+
       res.status(200).json({
         success: true,
-        message: 'If an account matches that email, password reset instructions have been dispatched.',
-        ...(devResetToken ? { devToken: devResetToken } : {})
+        emailDeliveryConfigured: hasEmailService,
+        message: hasEmailService
+          ? 'If an account matches that email, password reset instructions have been dispatched.'
+          : 'Password reset token generated, but outbound email delivery (SMTP/SES) is not configured in this environment.'
       });
     } catch (err) {
       next(err);
