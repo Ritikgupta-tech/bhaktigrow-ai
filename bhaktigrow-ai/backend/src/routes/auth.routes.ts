@@ -55,10 +55,11 @@ function generateToken(user: IUser): string {
 }
 
 function setAuthCookie(res: Response, token: string): void {
+  const isProd = env.NODE_ENV === 'production';
   res.cookie('token', token, {
     httpOnly: true,
-    secure: env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax',
     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
   });
 }
@@ -171,7 +172,12 @@ router.post(
 
 // POST /api/v1/auth/logout
 router.post('/logout', (_req: Request, res: Response) => {
-  res.clearCookie('token');
+  const isProd = env.NODE_ENV === 'production';
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax'
+  });
   res.status(200).json({
     success: true,
     message: 'Logged out successfully.'

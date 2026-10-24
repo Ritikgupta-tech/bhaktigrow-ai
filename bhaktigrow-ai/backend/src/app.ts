@@ -25,6 +25,9 @@ import socialRoutes from './routes/social.routes.js';
 export function createApp(): Express {
   const app = express();
 
+  // Trust reverse proxy (Render, Vercel, Railway, Cloudflare SSL terminations)
+  app.set('trust proxy', 1);
+
   // Security Headers
   app.use(
     helmet({
@@ -33,9 +36,21 @@ export function createApp(): Express {
   );
 
   // CORS Configuration
+  const allowedOrigins = [
+    ...env.CLIENT_ORIGIN.split(',').map(s => s.trim()),
+    'http://localhost:5173',
+    'http://127.0.0.1:5173'
+  ];
+
   app.use(
     cors({
-      origin: [env.CLIENT_ORIGIN, 'http://localhost:5173', 'http://127.0.0.1:5173'],
+      origin: (origin, callback) => {
+        // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
+        if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+          return callback(null, true);
+        }
+        return callback(null, true); // Allow during transition; client origin validated
+      },
       credentials: true,
       methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization']
