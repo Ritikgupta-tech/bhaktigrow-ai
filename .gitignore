@@ -1,0 +1,24 @@
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+bhaktigrow-ai/**/node_modules/
+
+# Build artifacts
+dist/
+bhaktigrow-ai/**/dist/
+.vite/
+bhaktigrow-ai/**/.vite/
+coverage/
+
+# Uploads
+uploads/
+bhaktigrow-ai/**/uploads/
+
+# OS and Editor
+.DS_Store
+Thumbs.db
+*.log

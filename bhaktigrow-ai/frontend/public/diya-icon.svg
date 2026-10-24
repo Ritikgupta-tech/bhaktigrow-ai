@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="flame" x1="50" y1="10" x2="50" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fff" />
+      <stop offset="30%" stop-color="#fbbf24" />
+      <stop offset="70%" stop-color="#f97316" />
+      <stop offset="100%" stop-color="#dc2626" />
+    </linearGradient>
+    <linearGradient id="bowl" x1="10" y1="50" x2="90" y2="90" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="50%" stop-color="#b45309" />
+      <stop offset="100%" stop-color="#78350f" />
+    </linearGradient>
+  </defs>
+  <!-- Flame -->
+  <path d="M50 12 C58 28, 66 38, 62 52 C58 64, 42 64, 38 52 C34 38, 42 28, 50 12 Z" fill="url(#flame)" />
+  <circle cx="50" cy="46" r="6" fill="#fff" opacity="0.8" />
+  <!-- Diya Bowl -->
+  <path d="M15 55 C25 82, 75 82, 85 55 C70 65, 30 65, 15 55 Z" fill="url(#bowl)" />
+  <path d="M20 54 Q50 62 80 54 Q50 58 20 54 Z" fill="#fcd34d" />
+  <!-- Base -->
+  <ellipse cx="50" cy="82" rx="20" ry="5" fill="#92400e" />
+</svg>

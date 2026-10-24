@@ -1,0 +1,31 @@
+{
+  "name": "bhaktigrow-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BhaktiGrow AI — Production-Ready Full-Stack Devotional Content Growth Platform",
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build:backend": "npm --prefix backend run build",
+    "build:frontend": "npm --prefix frontend run build",
+    "build": "npm run build:backend && npm run build:frontend",
+    "test:backend": "npm --prefix backend test",
+    "test:frontend": "npm --prefix frontend test",
+    "test": "npm run test:backend && npm run test:frontend"
+  },
+  "keywords": [
+    "bhakti",
+    "devotional",
+    "content-creator",
+    "youtube",
+    "instagram",
+    "facebook",
+    "fullstack",
+    "mongodb",
+    "express",
+    "react",
+    "typescript"
+  ],
+  "author": "BhaktiGrow Engineering",
+  "license": "MIT"
+}
