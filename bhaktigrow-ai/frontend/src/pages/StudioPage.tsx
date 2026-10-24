@@ -206,9 +206,14 @@ export const StudioPage: React.FC = () => {
       });
 
       let results: Suggestion[] = [];
-      if (remoteRes.success && remoteRes.data && Array.isArray((remoteRes.data as any).suggestions) && (remoteRes.data as any).suggestions.length > 0) {
-        results = (remoteRes.data as any).suggestions;
-      } else {
+      if (remoteRes.success && remoteRes.data) {
+        if (Array.isArray(remoteRes.data) && remoteRes.data.length > 0) {
+          results = remoteRes.data as unknown as Suggestion[];
+        } else if (Array.isArray((remoteRes.data as any).suggestions) && (remoteRes.data as any).suggestions.length > 0) {
+          results = (remoteRes.data as any).suggestions;
+        }
+      }
+      if (results.length === 0) {
         // Deterministic local generator fallback
         results = generateSuggestions(formInput, selectedPlatforms);
       }

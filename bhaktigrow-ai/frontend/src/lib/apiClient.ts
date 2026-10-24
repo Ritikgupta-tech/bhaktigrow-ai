@@ -7,7 +7,10 @@ export const getApiBaseUrl = (): string => {
   if (typeof window !== 'undefined' && localStorage.getItem('bhaktigrow_api_url')) {
     return localStorage.getItem('bhaktigrow_api_url')!;
   }
-  return import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  return import.meta.env.DEV ? 'http://localhost:5000/api/v1' : 'https://bhaktigrow-api.onrender.com/api/v1';
 };
 
 export const API_BASE_URL = getApiBaseUrl();

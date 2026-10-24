@@ -9,7 +9,8 @@ const router = Router();
 
 const createSuggestionSchema = z.object({
   body: z.object({
-    suggestionId: z.string().min(1),
+    suggestionId: z.string().optional(),
+    id: z.string().optional(),
     platform: z.enum(['youtube', 'instagram', 'facebook']),
     category: z.string().default('General Devotion'),
     strategy: z.string().default('search-seo'),
@@ -84,9 +85,10 @@ router.post(
   validate(createSuggestionSchema),
   async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
+      const suggestionId = req.body.suggestionId || req.body.id || `sugg_${Date.now()}`;
       const existing = await SavedSuggestion.findOne({
         owner: req.user!._id,
-        suggestionId: req.body.suggestionId
+        suggestionId
       });
 
       if (existing) {
@@ -100,6 +102,7 @@ router.post(
 
       const created = await SavedSuggestion.create({
         ...req.body,
+        suggestionId,
         owner: req.user!._id
       });
 
