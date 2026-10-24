@@ -9,12 +9,16 @@ export const ForgotPasswordPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [devToken, setDevToken] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    await api.auth.forgotPassword(email);
+    const res = await api.auth.forgotPassword(email);
     setLoading(false);
+    if ((res as any).devToken) {
+      setDevToken((res as any).devToken);
+    }
     setSubmitted(true);
   };
 
@@ -40,9 +44,18 @@ export const ForgotPasswordPage: React.FC = () => {
             <p className="text-xs text-slate-300 leading-relaxed">
               If an account with that email exists, password reset instructions and security token have been generated.
             </p>
+            {devToken && (
+              <div className="p-3 rounded-xl bg-amber-500/15 border border-amber-500/30 text-left text-xs font-mono break-all space-y-1">
+                <p className="font-sans font-bold text-amber-400">Dev Mode Reset Token:</p>
+                <p className="text-slate-200 select-all">{devToken}</p>
+              </div>
+            )}
             <div className="pt-2">
-              <Link to="/reset-password" className="text-xs text-amber-400 font-bold hover:underline">
-                Have a reset token? Click here to set new password &rarr;
+              <Link 
+                to={devToken ? `/reset-password?token=${encodeURIComponent(devToken)}` : "/reset-password"} 
+                className="text-xs text-amber-400 font-bold hover:underline"
+              >
+                {devToken ? "Prefill Token & Set New Password →" : "Have a reset token? Click here to set new password →"}
               </Link>
             </div>
           </div>

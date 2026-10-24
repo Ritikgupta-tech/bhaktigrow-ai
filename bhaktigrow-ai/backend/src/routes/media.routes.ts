@@ -30,15 +30,18 @@ router.use(authenticate);
 // POST /api/v1/media/upload
 router.post(
   '/upload',
-  upload.single('video'),
+  upload.fields([{ name: 'video', maxCount: 1 }, { name: 'file', maxCount: 1 }, { name: 'media', maxCount: 1 }]),
   async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
-      if (!req.file) {
+      const filesMap = req.files as { [fieldname: string]: Express.Multer.File[] } | undefined;
+      const uploadedFile = req.file || filesMap?.video?.[0] || filesMap?.file?.[0] || filesMap?.media?.[0];
+
+      if (!uploadedFile) {
         res.status(400).json({ success: false, message: 'No media file provided.' });
         return;
       }
 
-      const saved = storageService.saveLocalFile(req.file);
+      const saved = storageService.saveLocalFile(uploadedFile);
 
       const asset = await MediaAsset.create({
         owner: req.user!._id,

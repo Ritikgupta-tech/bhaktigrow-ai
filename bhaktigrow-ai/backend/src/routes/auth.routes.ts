@@ -110,11 +110,16 @@ router.post(
       const token = generateToken(user);
       setAuthCookie(res, token);
 
+      if (env.NODE_ENV !== 'production') {
+        console.log(`[Dev Auth] Email verification token for ${email}: ${verificationToken}`);
+      }
+
       res.status(201).json({
         success: true,
         message: 'Account registered successfully.',
         token,
-        user: sanitizeUser(user)
+        user: sanitizeUser(user),
+        ...(env.NODE_ENV !== 'production' ? { devVerificationToken: verificationToken } : {})
       });
     } catch (err) {
       next(err);
@@ -191,17 +196,24 @@ router.post(
       const { email } = req.body;
       const user = await User.findOne({ email: email.toLowerCase() });
 
+      let devResetToken: string | undefined;
       if (user) {
         const resetToken = crypto.randomBytes(32).toString('hex');
         user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
         user.resetPasswordExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
         await user.save();
+
+        if (env.NODE_ENV !== 'production') {
+          devResetToken = resetToken;
+          console.log(`[Dev Auth] Password reset token for ${email}: ${resetToken}`);
+        }
       }
 
       // Do not reveal if email exists
       res.status(200).json({
         success: true,
-        message: 'If an account matches that email, password reset instructions have been dispatched.'
+        message: 'If an account matches that email, password reset instructions have been dispatched.',
+        ...(devResetToken ? { devToken: devResetToken } : {})
       });
     } catch (err) {
       next(err);

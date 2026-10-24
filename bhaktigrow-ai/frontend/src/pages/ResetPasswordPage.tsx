@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { api } from '../lib/apiClient';
 import { useToast } from '../context/ToastContext';
 import { Button } from '../components/ui/Button';
@@ -8,12 +8,20 @@ import { Key, Lock, ArrowLeft } from 'lucide-react';
 
 export const ResetPasswordPage: React.FC = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { showToast } = useToast();
 
-  const [token, setToken] = useState('');
+  const queryToken = searchParams.get('token') || '';
+  const [token, setToken] = useState(queryToken);
   const [newPassword, setNewPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (queryToken) {
+      setToken(queryToken);
+    }
+  }, [queryToken]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
