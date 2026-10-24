@@ -21,6 +21,7 @@ import mediaRoutes from './routes/media.routes.js';
 import analyticsRoutes from './routes/analytics.routes.js';
 import settingsRoutes from './routes/settings.routes.js';
 import socialRoutes from './routes/social.routes.js';
+import researchRoutes from './routes/research.routes.js';
 
 export function createApp(): Express {
   const app = express();
@@ -101,6 +102,7 @@ export function createApp(): Express {
   apiV1.use('/analytics', analyticsRoutes);
   apiV1.use('/settings', settingsRoutes);
   apiV1.use('/social', socialRoutes);
+  apiV1.use('/research', researchRoutes);
 
   // Mount routes under /api/v1 AND root / (for maximum frontend client resilience)
   app.use('/api/v1', apiV1);

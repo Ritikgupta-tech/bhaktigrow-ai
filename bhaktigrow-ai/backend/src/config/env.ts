@@ -16,6 +16,8 @@ const envSchema = z.object({
   AI_PROVIDER: z.enum(['gemini', 'openai', 'mock']).default('mock'),
   GEMINI_API_KEY: z.string().optional(),
   OPENAI_API_KEY: z.string().optional(),
+  YOUTUBE_API_KEY: z.string().optional(),
+  SERPAPI_API_KEY: z.string().optional(),
   STORAGE_DRIVER: z.enum(['local', 's3']).default('local'),
   UPLOAD_DIR: z.string().default(path.resolve(process.cwd(), 'uploads')),
   MAX_UPLOAD_SIZE_MB: z.coerce.number().default(500)

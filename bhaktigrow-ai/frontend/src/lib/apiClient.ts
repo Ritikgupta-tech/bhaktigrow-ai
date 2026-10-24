@@ -274,6 +274,25 @@ class ApiClient {
     reset: () => this.request('/settings/reset', { method: 'POST' })
   };
 
+  // Live Research Endpoints (YouTube & Google Trends)
+  research = {
+    getTrends: (q?: string) =>
+      this.request<{ isLive: boolean; source: string; query: string; timeline: Array<{ month: string; volume: number; date?: string }> }>(
+        `/research/trends${q ? `?q=${encodeURIComponent(q)}` : ''}`,
+        { method: 'GET' }
+      ),
+    searchYouTube: (q: string) =>
+      this.request<{ isLive: boolean; source: string; query: string; items: any[] }>(
+        `/research/youtube?q=${encodeURIComponent(q)}`,
+        { method: 'GET' }
+      ),
+    getOverview: (q?: string) =>
+      this.request<{ trends: any; youtube: any }>(
+        `/research/overview${q ? `?q=${encodeURIComponent(q)}` : ''}`,
+        { method: 'GET' }
+      )
+  };
+
   // Social Status
   social = {
     getStatus: () => this.request('/social/status', { method: 'GET' })
