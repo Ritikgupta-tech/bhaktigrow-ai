@@ -3,7 +3,7 @@ services:
     name: bhaktigrow-api
     runtime: node
     rootDir: bhaktigrow-ai/backend
-    buildCommand: npm install && npm run build
+    buildCommand: npm install --include=dev && npm run build
     startCommand: node dist/index.js
     healthCheckPath: /api/v1/health
     plan: free

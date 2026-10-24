@@ -3,7 +3,13 @@ import jwt from 'jsonwebtoken';
 import { env } from '../config/env.js';
 import { User, IUser } from '../models/User.js';
 
-export interface AuthenticatedRequest extends Request {
+export interface AuthenticatedRequest<
+  P = any,
+  ResBody = any,
+  ReqBody = any,
+  ReqQuery = any,
+  Locals extends Record<string, any> = Record<string, any>
+> extends Request<P, ResBody, ReqBody, ReqQuery, Locals> {
   user?: IUser;
 }
 
