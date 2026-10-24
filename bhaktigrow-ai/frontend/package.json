@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "vercel-install": "node scripts/vercel-install.js",
+    "vercel-build": "node scripts/vercel-build.js",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "oxlint",

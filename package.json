@@ -1,17 +1,12 @@
 {
   "name": "bhaktigrow-ai-monorepo",
   "version": "1.0.0",
+  "type": "module",
   "private": true,
   "description": "BhaktiGrow AI — Devotional Content Growth Platform",
-  "workspaces": [
-    "bhaktigrow-ai/frontend",
-    "bhaktigrow-ai/backend"
-  ],
   "scripts": {
-    "build": "cd bhaktigrow-ai/frontend && npm install && npm run build",
-    "install:frontend": "cd bhaktigrow-ai/frontend && npm install",
-    "install:backend": "cd bhaktigrow-ai/backend && npm install",
-    "test:frontend": "cd bhaktigrow-ai/frontend && npm test",
-    "test:backend": "cd bhaktigrow-ai/backend && npm test"
+    "vercel-install": "node scripts/vercel-install.js",
+    "vercel-build": "node scripts/vercel-build.js",
+    "build": "node scripts/vercel-build.js"
   }
 }
