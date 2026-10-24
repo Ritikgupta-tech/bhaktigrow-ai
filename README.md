@@ -1,128 +1,107 @@
-# BhaktiGrow AI — Premium Devotional Content Growth Platform
+# BhaktiGrow AI — Production Full-Stack Devotional Growth Platform
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel%20Deployed-brightgreen.svg)](https://frontend-chi-indol-27.vercel.app)
+[![GitHub](https://img.shields.io/badge/GitHub-Ritikgupta--tech%2Fbhaktigrow--ai-blue.svg)](https://github.com/Ritikgupta-tech/bhaktigrow-ai.git)
 [![React](https://img.shields.io/badge/React-19.3.1-blue.svg)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-6.0-blue.svg)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-8.3-646CFF.svg)](https://vitejs.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-4.3-38B2AC.svg)](https://tailwindcss.com/)
-[![Tests](https://img.shields.io/badge/Tests-29%20Passed-emerald.svg)](https://vitest.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9%20%7C%206.0-blue.svg)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-22.x-green.svg)](https://nodejs.org/)
+[![Express](https://img.shields.io/badge/Express-4.21-lightgrey.svg)](https://expressjs.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-8.0-emerald.svg)](https://www.mongodb.com/)
+[![Vitest](https://img.shields.io/badge/Tests-47%20Passed%20(100%25)-brightgreen.svg)](https://vitest.dev/)
+[![License](https://img.shields.io/badge/License-MIT-amber.svg)](LICENSE)
 
-**BhaktiGrow AI** is a devotional content strategy and optimization platform designed specifically for Sanatan creators publishing on **YouTube**, **Instagram**, and **Facebook**. 
+**BhaktiGrow AI** is an AI-powered devotional content strategy and optimization SaaS platform designed specifically for Sanatan creators publishing on **YouTube**, **Instagram**, and **Facebook**. 
 
-The platform empowers creators of Bhajans, Aartis, Mantras, Hanuman Chalisa recitations, Shiva & Krishna devotion, Ram Bhakti, Durga Stuti, Ganesh Aarti, and guided spiritual meditations to format, optimize, and organize their creative workflow with tailored editorial frameworks.
-
----
-
-## 🌟 Key Features
-
-### 1. 12 Dedicated Application Pages
-- **Dashboard (`/dashboard`)**: Creator hub with live metrics, platform distribution, weekly production trends, upcoming calendar releases, and quick-start panels.
-- **AI Content Studio (`/studio`)**: The primary creation workspace. Features local video drag-and-drop / preview (MP4, WebM, MOV up to 500 MB), multi-field devotional context form, and deterministic 5-strategy multi-platform generator.
-- **YouTube Studio (`/youtube`)**: 5 platform-tailored suggestions featuring high-intent SEO titles, comprehensive descriptions, tags, pinned comments, CTR thumbnail concepts, and realistic desktop preview.
-- **Instagram Studio (`/instagram`)**: 5 vertical Reel strategies with opening scroll-stopping hooks, cover headlines, on-screen text overlays, subtitle pacing guidance, and vertical 9:16 mobile previews.
-- **Facebook Studio (`/facebook`)**: 5 family and community-oriented video frameworks with conversational captions, nostalgic heritage discussions, prayer circles, and realistic Facebook post previews.
-- **Trend & Keyword Research (`/research`)**: High-intent devotional keyword cards, search intent analysis, unmet audience content gaps, seasonal festival trajectories, and strictly labeled evidence statuses.
-- **Thumbnail & Hook Lab (`/thumbnail-lab`)**: Creative design laboratory with 16:9 and 9:16 aspect ratio previews, editable headlines, safe-area overlay guides, and sacred color harmonies (Sacred Saffron, Midnight Indigo, Devi Crimson, Vrindavan Green).
-- **Bhakti Content Library (`/library`)**: Curated repository of authentic devotional themes across 12 sacred categories. Search, filter, inspect details, copy, and send directly into the AI Studio.
-- **Content Calendar (`/calendar`)**: Interactive content release planner with Month, Week, and List views, date navigation (Prev, Next, Today), add/edit/reschedule/delete modals, and persistent localStorage sync.
-- **Saved Suggestions (`/saved`)**: Shared unified bookmarks store accessible across all pages with search, platform filters, inline edits, and one-click `.txt` export.
-- **Performance Insights (`/analytics`)**: Visual analytics dashboard featuring platform voice distribution, strategy engagement benchmarks, and publishing rhythm principles.
-- **Settings & Preferences (`/settings`)**: Theme, preferred language, default target platforms, tone configuration, reduced-motion accessibility toggle, and explicit data reset with confirmation.
-
-### 2. Deterministic Local Suggestion Engine
-- Typed `SuggestionProvider` interface allowing seamless future backend/AI integration without rewriting the UI.
-- Generates exactly 5 distinct strategies per platform:
-  1. **Search-Focused SEO**
-  2. **Curiosity-Driven Hook**
-  3. **Emotional Storytelling**
-  4. **Community Engagement**
-  5. **Calm & Meditative Approach**
-- Output scaling:
-  - 1 platform = 5 suggestions
-  - 2 platforms = 10 suggestions
-  - 3 platforms = 15 suggestions
-- Single-item regeneration: re-synthesizes an individual suggestion while strictly preserving its strategy archetype.
-- No duplicate titles or hooks within a platform result set.
-- Gracefully handles sparse inputs with intelligent category fallbacks.
-
-### 3. Local Video Upload Validator
-- Supports MP4, WebM, and MOV up to 500 MB.
-- Gracefully handles empty or generic MIME types commonly reported by browsers for QuickTime `.mov` files.
-- Memory leak prevention: automatically cleans up object URLs on file replace, removal, or component unmount.
-- Best-effort fallback when browser codecs cannot decode local video previews.
-- **100% Client-Side Privacy**: No video bytes are ever uploaded to any remote server.
-
-### 4. Strict Evidence Integrity
-- Every research record and strategy metric carries a clear evidence status badge:
-  - `editorial`: Original devotional recommendation or qualitative framework.
-  - `calculated`: Derived mathematically from local application state.
-  - `illustrative`: Simulated demo benchmark or sample trajectory.
-  - `verified`: Reserved only for accessible URLs with retrieval timestamps.
-- Explicit label displayed across research screens: **“Sample research data — not live.”**
-- Zero fabricated timestamps, scripture verses, copyrighted lyrics, or fake trending audio claims.
+- **Live Deployed Web Application**: [https://frontend-chi-indol-27.vercel.app](https://frontend-chi-indol-27.vercel.app)
+- **Official GitHub Repository**: [https://github.com/Ritikgupta-tech/bhaktigrow-ai.git](https://github.com/Ritikgupta-tech/bhaktigrow-ai.git)
+- **Default Production Branch**: `main`
 
 ---
 
-## 🛠️ Technology Stack
+## 🏗️ System Architecture
 
-- **Framework**: React 19 + TypeScript
-- **Bundler**: Vite 8 with Rolldown manual chunks code splitting
-- **Styling**: Tailwind CSS v4 (Devotional Dark-first theme with Saffron, Antique Gold, Midnight Navy, and Glassmorphism)
-- **Routing**: React Router v7 (`react-router-dom`)
-- **Icons**: Lucide React + Custom Devotional SVG icons (Diya, Sacred Lotus, Geometric Mandala)
-- **Data Visualization**: Recharts (Accessible bar, donut, and area charts)
-- **Testing**: Vitest + React Testing Library + User Event + jsdom
-- **State Persistence**: Typed `localStorage` wrappers with defensive parsing to protect against corrupted storage
+```mermaid
+graph TD
+    Client["React 19 Frontend (Vite + Tailwind v4)"]
+    API["Express 4 RESTful API (/api/v1)"]
+    Auth["JWT + Cookie Auth & Rate Limiter"]
+    DB[("MongoDB 8.0 Persistence Layer")]
+    AIService["AI Engine (Gemini / OpenAI / Deterministic 5-Strategy)"]
+    MediaService["Local Disk / S3 Media Storage"]
+    Swagger["OpenAPI 3.0 Documentation (/api/docs)"]
 
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js: `v18+` (Tested on `v22.23.1`)
-- npm: `v9+` (Tested on `v10.9.8`)
-
-### Installation
-
-```bash
-# Navigate to project folder
-cd bhaktigrow-ai
-
-# Install dependencies (already installed if cloned in place)
-npm install
+    Client -->|Bearer Token / JSON API| API
+    API --> Auth
+    Auth --> DB
+    API --> AIService
+    API --> MediaService
+    API --> Swagger
 ```
 
-### Development Server
+### Monorepo Structure
 
-```bash
-# Start local development server
-npm run dev
 ```
-
-Open `http://localhost:5173` in your browser.
-
-### Run Automated Tests
-
-```bash
-# Execute Vitest test suites (29 tests)
-npm test
-```
-
-### Production Build
-
-```bash
-# Type check and build production bundle
-npm run build
-
-# Preview production build locally
-npm run preview
+bhaktigrow-ai/
+├── frontend/                 # React 19 + TypeScript + Vite SPA
+│   ├── src/
+│   │   ├── components/      # UI components, layout, devotional icons
+│   │   ├── context/         # Auth, SavedItems, Calendar, Toast, Preferences
+│   │   ├── lib/             # API client, suggestion engine, video validator
+│   │   ├── pages/           # 12 core SaaS pages + 4 Auth pages
+│   │   ├── test/            # 29 Vitest + React Testing Library tests
+│   │   └── types/           # Strongly typed models and contracts
+├── backend/                  # Express 4 + TypeScript Node.js server
+│   ├── src/
+│   │   ├── config/          # Zod-validated env and Mongoose connection
+│   │   ├── controllers/     # Auth, Content, AI, Suggestions, Calendar, Media, Analytics
+│   │   ├── middleware/      # JWT auth, Zod validation, error handler, rate limiter
+│   │   ├── models/          # User, ContentDraft, SavedSuggestion, Calendar, Media
+│   │   ├── routes/          # Express route definitions
+│   │   ├── services/        # AI orchestration, local file storage, OAuth status
+│   │   ├── docs/            # Swagger OpenAPI 3.0 documentation
+│   │   └── test/            # 18 Vitest integration & security tests
+├── shared/                   # Shared TypeScript interfaces & DTOs
+├── .env.example              # Comprehensive environment configuration template
+├── render.yaml               # Render Blueprint backend deployment configuration
+└── README.md                 # Complete documentation and setup guide
 ```
 
 ---
 
-## ⚠️ Demo Scope & Limitations
+## 🌐 Production Deployment
 
-- **Frontend Only**: This is a standalone frontend prototype. There is no backend server, database, or real AI API key required.
-- **No Social Accounts**: Does not connect to live YouTube, Instagram, or Facebook account APIs.
-- **Simulated Metrics**: Analytics graphs, search volume scores, and engagement benchmarks represent qualitative devotional models and local demo state.
-- **Local Calendar**: Entries are for creator planning and content drafting; no posts are automatically published to social media.
-- **Honest Disclaimer**: BhaktiGrow AI provides editorial frameworks to improve content quality and discoverability, but never guarantees viral views, subscriber counts, or monetization revenue.
+### Frontend (Live on Vercel)
+- **Production URL**: [https://frontend-chi-indol-27.vercel.app](https://frontend-chi-indol-27.vercel.app)
+- **Framework**: Vite
+- **Build Command**: `npm run build`
+- **Output Directory**: `dist`
+- **SPA Routing**: Configured via `vercel.json` rewrites and `_redirects`
+
+### Backend (Render Blueprint Ready)
+1. In the [Render Dashboard](https://dashboard.render.com), click **New** -> **Blueprint**.
+2. Connect repository `https://github.com/Ritikgupta-tech/bhaktigrow-ai.git`.
+3. Render automatically detects `render.yaml` with:
+   - Root Directory: `backend`
+   - Build Command: `npm install && npm run build`
+   - Start Command: `node dist/index.js`
+   - Health Check: `/api/v1/health`
+4. Set your production environment variables:
+   - `MONGODB_URI`: Your MongoDB Atlas connection URI (`mongodb+srv://...`)
+   - `CLIENT_ORIGIN`: `https://frontend-chi-indol-27.vercel.app`
+   - `AI_PROVIDER`: `gemini` or `mock`
+   - `GEMINI_API_KEY`: Your Google AI Studio API key (optional)
+
+---
+
+## 🧪 Automated Test Verification
+
+All **47 automated tests** pass with 100% success rate:
+- **Backend**: 18 passed across 6 test suites (`health`, `auth`, `content`, `suggestions`, `ai`, `calendar`).
+- **Frontend**: 29 passed across 5 test suites (`integration`, `suggestionEngine`, `videoValidator`, `savedItems`, `calendar`).
+- **Production Builds**: Frontend (Vite) and Backend (tsc) compile with 0 errors.
+
+---
+
+## 📜 License
+
+MIT License. Designed and engineered for devotional content creators worldwide.

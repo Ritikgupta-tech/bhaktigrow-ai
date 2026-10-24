@@ -1,19 +1,20 @@
 # BhaktiGrow AI — Production Full-Stack Devotional Growth Platform
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel%20Deployed-brightgreen.svg)](https://frontend-chi-indol-27.vercel.app)
+[![GitHub](https://img.shields.io/badge/GitHub-Ritikgupta--tech%2Fbhaktigrow--ai-blue.svg)](https://github.com/Ritikgupta-tech/bhaktigrow-ai.git)
 [![React](https://img.shields.io/badge/React-19.3.1-blue.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9%20%7C%206.0-blue.svg)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-22.x-green.svg)](https://nodejs.org/)
 [![Express](https://img.shields.io/badge/Express-4.21-lightgrey.svg)](https://expressjs.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-8.0-emerald.svg)](https://www.mongodb.com/)
-[![Mongoose](https://img.shields.io/badge/Mongoose-8.10-red.svg)](https://mongoosejs.com/)
-[![Vite](https://img.shields.io/badge/Vite-8.3-646CFF.svg)](https://vitejs.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-4.3-38B2AC.svg)](https://tailwindcss.com/)
 [![Vitest](https://img.shields.io/badge/Tests-47%20Passed%20(100%25)-brightgreen.svg)](https://vitest.dev/)
 [![License](https://img.shields.io/badge/License-MIT-amber.svg)](LICENSE)
 
 **BhaktiGrow AI** is an AI-powered devotional content strategy and optimization SaaS platform designed specifically for Sanatan creators publishing on **YouTube**, **Instagram**, and **Facebook**. 
 
-The platform empowers creators of Bhajans, Aartis, Mantras, Hanuman Chalisa recitations, Shiva & Krishna devotion, Ram Bhakti, Durga Stuti, Ganesh Aarti, and guided spiritual meditations to plan, optimize, and organize their creative workflow with tailored editorial frameworks, real MongoDB persistence, and verified structured AI generation.
+- **Live Deployed Web Application**: [https://frontend-chi-indol-27.vercel.app](https://frontend-chi-indol-27.vercel.app)
+- **Official GitHub Repository**: [https://github.com/Ritikgupta-tech/bhaktigrow-ai.git](https://github.com/Ritikgupta-tech/bhaktigrow-ai.git)
+- **Default Production Branch**: `main`
 
 ---
 
