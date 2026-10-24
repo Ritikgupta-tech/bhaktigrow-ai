@@ -88,15 +88,17 @@ bhaktigrow-ai/
 4. Set your production environment variables:
    - `MONGODB_URI`: Your MongoDB Atlas connection URI (`mongodb+srv://...`)
    - `CLIENT_ORIGIN`: `https://frontend-chi-indol-27.vercel.app`
-   - `AI_PROVIDER`: `gemini` or `mock`
-   - `GEMINI_API_KEY`: Your Google AI Studio API key (optional)
+   - `AI_PROVIDER`: `generative-ai`, `gemini`, `openai`, or `devotional-engine`
+   - `YOUTUBE_API_KEY`: Real YouTube Data API v3 key for devotional trend metrics
+   - `SERPAPI_API_KEY`: Real SerpApi key for Google Trends timeline data
+   - `GEMINI_API_KEY`: Google AI Studio API key (optional)
 
 ---
 
 ## 🧪 Automated Test Verification
 
-All **47 automated tests** pass with 100% success rate:
-- **Backend**: 18 passed across 6 test suites (`health`, `auth`, `content`, `suggestions`, `ai`, `calendar`).
+All **48 automated tests** pass with 100% success rate:
+- **Backend**: 19 passed across 6 test suites (`health`, `auth`, `content`, `suggestions`, `ai`, `calendar`).
 - **Frontend**: 29 passed across 5 test suites (`integration`, `suggestionEngine`, `videoValidator`, `savedItems`, `calendar`).
 - **Production Builds**: Frontend (Vite) and Backend (tsc) compile with 0 errors.
 

@@ -139,9 +139,11 @@ NODE_ENV=development
 CLIENT_ORIGIN=http://localhost:5173
 MONGODB_URI=mongodb://127.0.0.1:27017/bhaktigrow
 JWT_SECRET=your_32_character_super_secure_secret_here!
-AI_PROVIDER=mock   # Change to "gemini" or "openai" when keys are supplied
-GEMINI_API_KEY=    # Optional: paste your Google AI Studio key
-OPENAI_API_KEY=    # Optional: paste your OpenAI API key
+AI_PROVIDER=generative-ai   # Options: "generative-ai", "gemini", "openai", "devotional-engine"
+YOUTUBE_API_KEY=        # Live YouTube Data API v3 key
+SERPAPI_API_KEY=        # Live SerpApi key for Google Trends
+GEMINI_API_KEY=         # Optional: Google AI Studio key
+OPENAI_API_KEY=         # Optional: OpenAI API key
 ```
 
 ### 3. Run Development Servers

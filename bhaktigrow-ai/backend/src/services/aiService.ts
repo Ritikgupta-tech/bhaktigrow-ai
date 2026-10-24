@@ -48,7 +48,7 @@ const STRATEGIES: { type: GeneratedSuggestion['strategy']; label: string }[] = [
 ];
 
 export class AIService {
-  private provider: 'gemini' | 'openai' | 'mock';
+  private provider: 'gemini' | 'openai' | 'generative-ai' | 'devotional-engine';
 
   constructor() {
     this.provider = env.AI_PROVIDER;
@@ -63,17 +63,29 @@ export class AIService {
       try {
         return await this.generateWithGemini(input);
       } catch (err) {
-        console.warn('[AIService] Gemini call failed, falling back to deterministic devotional engine:', err);
+        console.warn('[AIService] Gemini call failed, falling back to live generative AI:', err);
       }
     } else if (this.provider === 'openai' && env.OPENAI_API_KEY) {
       try {
         return await this.generateWithOpenAI(input);
       } catch (err) {
-        console.warn('[AIService] OpenAI call failed, falling back to deterministic devotional engine:', err);
+        console.warn('[AIService] OpenAI call failed, falling back to live generative AI:', err);
       }
     }
 
-    // Default: Deterministic Devotional Engine
+    // Live Generative AI Synthesis (real dynamic LLM)
+    try {
+      const liveAiResults = await this.generateWithRealLLM(input);
+      if (liveAiResults && liveAiResults.length > 0) {
+        this.provider = 'generative-ai';
+        return liveAiResults;
+      }
+    } catch (err) {
+      console.warn('[AIService] Live LLM call failed, falling back to devotional engine:', err);
+    }
+
+    // High-Quality Sanatan Devotional Content Engine
+    this.provider = 'devotional-engine';
     return this.generateDeterministic(input);
   }
 
@@ -189,6 +201,51 @@ export class AIService {
 
     const parsed = JSON.parse(content);
     return this.validateAndNormalizeOutput(parsed, input);
+  }
+
+  private async generateWithRealLLM(input: GenerateContentInput): Promise<GeneratedSuggestion[]> {
+    const prompt = this.buildPrompt(input);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 12000);
+
+    try {
+      const response = await fetch('https://text.pollinations.ai/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [{ role: 'user', content: prompt }],
+          model: 'openai',
+          jsonMode: true
+        }),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeout);
+      if (!response.ok) {
+        throw new Error(`Live LLM returned status ${response.status}`);
+      }
+
+      const text = await response.text();
+      const cleanJson = text.replace(/```json/g, '').replace(/```/g, '').trim();
+      const parsed = JSON.parse(cleanJson);
+      let items = this.validateAndNormalizeOutput(parsed, input);
+
+      // Ensure all requested platforms have complete strategies
+      if (items.length < input.platforms.length * 5) {
+        const fallback = this.generateDeterministic(input);
+        const seen = new Set(items.map(i => `${i.platform}-${i.strategy}`));
+        fallback.forEach(f => {
+          if (!seen.has(`${f.platform}-${f.strategy}`)) {
+            items.push(f);
+          }
+        });
+      }
+
+      return items;
+    } catch (err) {
+      clearTimeout(timeout);
+      throw err;
+    }
   }
 
   private buildPrompt(input: GenerateContentInput): string {

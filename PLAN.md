@@ -21,7 +21,7 @@ BhaktiGrow AI is a devotional content strategy and optimization platform for cre
 4. `/instagram`: 5 dedicated Instagram suggestions (hook, Reel cover text, caption, hashtags, vertical 9:16 Reel preview, on-screen text, subtitle guidance).
 5. `/facebook`: 5 dedicated Facebook suggestions (post title, conversational caption, engagement angle, pinned comment, FB post preview).
 6. `/research`: Trend & Keyword Research with search, category/platform/language filters, keyword opportunity cards, strictly labeled evidence status (`editorial`, `calculated`, `illustrative`, `verified` only if real URL).
-7. `/thumbnail-lab`: Visual creative workspace with CSS/SVG mockups, 16:9 and 9:16 aspect ratios, safe areas, saffron/gold devotional palettes, editable headlines.
+7. `/thumbnail-lab`: Visual creative workspace with CSS/SVG layout previews, 16:9 and 9:16 aspect ratios, safe areas, saffron/gold devotional palettes, editable headlines.
 8. `/library`: Curated Bhakti Content Library across 12 devotional categories (Hanuman Chalisa, Shiva, Krishna, Ram Bhakti, Durga, etc.), search, filter, send to Studio, save to shared store.
 9. `/calendar`: Interactive Content Calendar with Month, Week, and List views, date navigation (Prev, Next, Today), add/edit/reschedule/delete with modal dialogs, status/platform filters, demo planning notice.
 10. `/saved`: Shared Saved Suggestions page with search, filters, inline edit, copy fields/post, export as `.txt`, unsave, and duplicate protection.

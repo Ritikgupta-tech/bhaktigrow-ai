@@ -13,7 +13,7 @@ const envSchema = z.object({
   JWT_SECRET: z.string().min(16).default('bhaktigrow_super_secure_jwt_secret_dev_32chars!'),
   JWT_EXPIRES_IN: z.string().default('7d'),
   COOKIE_SECRET: z.string().default('bhaktigrow_cookie_secret_dev'),
-  AI_PROVIDER: z.enum(['gemini', 'openai', 'mock']).default('mock'),
+  AI_PROVIDER: z.enum(['gemini', 'openai', 'generative-ai', 'devotional-engine']).default('generative-ai'),
   GEMINI_API_KEY: z.string().optional(),
   OPENAI_API_KEY: z.string().optional(),
   YOUTUBE_API_KEY: z.string().optional(),

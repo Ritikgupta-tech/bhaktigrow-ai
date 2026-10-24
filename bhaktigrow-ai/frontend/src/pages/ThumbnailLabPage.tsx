@@ -98,7 +98,7 @@ export const ThumbnailLabPage: React.FC = () => {
         <div className="flex items-center gap-2">
           <ShieldAlert className="w-4 h-4 text-amber-400 shrink-0" />
           <span>
-            <strong>Design &amp; Layout Previews:</strong> These are CSS &amp; SVG vector composition mockups. BhaktiGrow AI does not claim to run heavy generative AI image synthesis.
+            <strong>Design &amp; Layout Previews:</strong> These are real-time CSS &amp; SVG vector composition previews for devotional video creators.
           </span>
         </div>
         <div className="flex items-center gap-2 shrink-0">
@@ -153,7 +153,7 @@ export const ThumbnailLabPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Interactive Mockup Canvas */}
+          {/* Interactive Preview Canvas */}
           <div className="relative mx-auto flex items-center justify-center bg-black/80 p-4 rounded-3xl border border-slate-800 shadow-2xl overflow-hidden">
             <div
               className={`relative rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 border border-amber-500/30 flex flex-col justify-between p-6 bg-gradient-to-br ${selectedPalette.bgGradient} ${

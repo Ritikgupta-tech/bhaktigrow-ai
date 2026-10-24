@@ -21,7 +21,7 @@ services:
       - key: CLIENT_ORIGIN
         value: https://frontend-chi-indol-27.vercel.app
       - key: AI_PROVIDER
-        value: mock
+        value: generative-ai
       - key: GEMINI_API_KEY
         sync: false
       - key: OPENAI_API_KEY

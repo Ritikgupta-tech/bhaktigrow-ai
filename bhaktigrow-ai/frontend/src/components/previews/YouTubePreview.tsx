@@ -7,7 +7,7 @@ export const YouTubePreview: React.FC<{ suggestion: Suggestion }> = ({ suggestio
 
   return (
     <div className="bg-[#0f0f0f] border border-slate-800 rounded-2xl overflow-hidden shadow-2xl text-slate-100 max-w-xl mx-auto">
-      {/* 16:9 Video Mockup Area */}
+      {/* 16:9 Video Preview Canvas */}
       <div className="relative aspect-video bg-gradient-to-br from-slate-900 via-[#16120b] to-[#1e1305] flex flex-col items-center justify-center p-6 border-b border-slate-800 group">
         {/* Sacred ambient background */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(245,158,11,0.15)_0%,transparent_70%)] pointer-events-none" />
