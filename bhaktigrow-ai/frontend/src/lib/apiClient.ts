@@ -3,14 +3,62 @@
  * Connects frontend to the Express RESTful backend (/api/v1)
  */
 
+export const normalizeApiUrl = (rawUrl?: string | null): string => {
+  const isProductionHost = typeof window !== 'undefined' && 
+    window.location.hostname !== 'localhost' && 
+    window.location.hostname !== '127.0.0.1';
+
+  if (!rawUrl || !rawUrl.trim()) {
+    return isProductionHost
+      ? 'https://bhaktigrow-api.onrender.com/api/v1'
+      : (import.meta.env.VITE_API_URL || 'https://bhaktigrow-api.onrender.com/api/v1');
+  }
+
+  let clean = rawUrl.trim().replace(/\/+$/, '');
+
+  // If on a remote production host (e.g. *.vercel.app), ignore any stale localhost URL
+  if (isProductionHost && (clean.includes('localhost') || clean.includes('127.0.0.1'))) {
+    return 'https://bhaktigrow-api.onrender.com/api/v1';
+  }
+
+  // Ensure /api/v1 path suffix
+  if (!clean.endsWith('/api/v1')) {
+    if (clean.endsWith('/api')) {
+      clean = `${clean}/v1`;
+    } else {
+      clean = `${clean}/api/v1`;
+    }
+  }
+
+  return clean;
+};
+
 export const getApiBaseUrl = (): string => {
-  if (typeof window !== 'undefined' && localStorage.getItem('bhaktigrow_api_url')) {
-    return localStorage.getItem('bhaktigrow_api_url')!;
+  if (typeof window !== 'undefined') {
+    const stored = localStorage.getItem('bhaktigrow_api_url');
+    if (stored) {
+      const normalized = normalizeApiUrl(stored);
+      // Auto-heal stale or unnormalized localStorage values
+      if (normalized !== stored) {
+        localStorage.setItem('bhaktigrow_api_url', normalized);
+      }
+      return normalized;
+    }
   }
+
   if (import.meta.env.VITE_API_URL) {
-    return import.meta.env.VITE_API_URL;
+    return normalizeApiUrl(import.meta.env.VITE_API_URL);
   }
-  return import.meta.env.DEV ? 'http://localhost:5000/api/v1' : 'https://bhaktigrow-api.onrender.com/api/v1';
+
+  const isProductionHost = typeof window !== 'undefined' &&
+    window.location.hostname !== 'localhost' &&
+    window.location.hostname !== '127.0.0.1';
+
+  if (isProductionHost || !import.meta.env.DEV) {
+    return 'https://bhaktigrow-api.onrender.com/api/v1';
+  }
+
+  return 'http://localhost:5000/api/v1';
 };
 
 export const API_BASE_URL = getApiBaseUrl();
@@ -45,7 +93,8 @@ class ApiClient {
   public setBaseUrl(url: string | null): void {
     if (typeof window !== 'undefined') {
       if (url && url.trim()) {
-        localStorage.setItem('bhaktigrow_api_url', url.trim().replace(/\/+$/, ''));
+        const normalized = normalizeApiUrl(url);
+        localStorage.setItem('bhaktigrow_api_url', normalized);
       } else {
         localStorage.removeItem('bhaktigrow_api_url');
       }
@@ -60,8 +109,9 @@ class ApiClient {
     endpoint: string,
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
-    const base = this.getBaseUrl();
-    const url = `${base}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+    const base = this.getBaseUrl().replace(/\/+$/, '');
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    const url = `${base}${cleanEndpoint}`;
     const token = this.getToken();
 
     const headers: Record<string, string> = {

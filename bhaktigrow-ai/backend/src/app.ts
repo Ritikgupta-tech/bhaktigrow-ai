@@ -38,22 +38,35 @@ export function createApp(): Express {
   // CORS Configuration
   const allowedOrigins = [
     ...env.CLIENT_ORIGIN.split(',').map(s => s.trim()),
+    'https://frontend-chi-indol-27.vercel.app',
     'http://localhost:5173',
-    'http://127.0.0.1:5173'
+    'http://127.0.0.1:5173',
+    'http://localhost:5000',
+    'http://localhost:3000'
   ];
 
   app.use(
     cors({
       origin: (origin, callback) => {
         // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
-        if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+        if (!origin) {
+          return callback(null, true);
+        }
+        if (
+          allowedOrigins.includes(origin) ||
+          allowedOrigins.includes('*') ||
+          origin.endsWith('.vercel.app') ||
+          origin.includes('localhost') ||
+          origin.includes('127.0.0.1')
+        ) {
           return callback(null, true);
         }
         return callback(null, true); // Allow during transition; client origin validated
       },
       credentials: true,
       methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization']
+      allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+      optionsSuccessStatus: 200
     })
   );
 
@@ -89,7 +102,9 @@ export function createApp(): Express {
   apiV1.use('/settings', settingsRoutes);
   apiV1.use('/social', socialRoutes);
 
+  // Mount routes under /api/v1 AND root / (for maximum frontend client resilience)
   app.use('/api/v1', apiV1);
+  app.use('/', apiV1);
 
   // Catch-all 404 for undefined routes
   app.use('*', (req: Request, res: Response) => {

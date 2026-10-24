@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { api } from '../lib/apiClient';
 import { Button } from '../components/ui/Button';
 import { DiyaFlameIcon } from '../components/devotional/DevotionalIcons';
 import { Lock, Mail, Eye, EyeOff, Sparkles, ArrowRight } from 'lucide-react';
@@ -43,15 +44,11 @@ export const LoginPage: React.FC = () => {
     setEmail('creator@bhaktigrow.com');
     setPassword('Devotion123!');
     setLoading(true);
-    // Attempt registration first if test account doesn't exist yet, then log in
-    await fetch('http://localhost:5000/api/v1/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: 'Devotional Creator',
-        email: 'creator@bhaktigrow.com',
-        password: 'Devotion123!'
-      })
+    // Attempt registration first if demo account doesn't exist yet, then log in
+    await api.auth.register({
+      name: 'Devotional Creator',
+      email: 'creator@bhaktigrow.com',
+      password: 'Devotion123!'
     }).catch(() => {});
 
     const res = await login('creator@bhaktigrow.com', 'Devotion123!');
